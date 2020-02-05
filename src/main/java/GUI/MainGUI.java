@@ -7,13 +7,18 @@
 package GUI;
 
 import BL.TravelGuideBL;
+import BL.WeatherClass;
+import DAL.OpenWeatherResponse;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.xml.parsers.ParserConfigurationException;
 import org.jdom2.Document;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -36,7 +41,9 @@ public class MainGUI extends javax.swing.JFrame {
         this.addWindowListener(new WindowAdapter() {
             
             public void windowClosing(WindowEvent evt) {
+                
                 doc = tgbl.createDocument("LocData");
+                tgbl.prepareXML(doc);
                 try {
                     tgbl.writeXML(doc);
                 } catch (IOException ex) {
@@ -52,6 +59,7 @@ public class MainGUI extends javax.swing.JFrame {
             for (int i = 0; i < tgbl.getLocdata().size(); i++) {
                 cbLocation.addItem(tgbl.getLocdata().get(i).city);
             }  
+            cbLocation.setSelectedIndex(0);
             cbLocation.updateUI();
         }
     }
@@ -67,6 +75,13 @@ public class MainGUI extends javax.swing.JFrame {
 
         cbLocation = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
+        pnFirstTwoDays = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        pnOtherDays = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         miAdd = new javax.swing.JMenuItem();
@@ -76,18 +91,35 @@ public class MainGUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         cbLocation.setModel(new javax.swing.DefaultComboBoxModel<>());
+        cbLocation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbLocationActionPerformed(evt);
+            }
+        });
         getContentPane().add(cbLocation, java.awt.BorderLayout.PAGE_START);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 256, Short.MAX_VALUE)
-        );
+        jPanel1.setLayout(new java.awt.GridLayout(2, 0));
+
+        pnFirstTwoDays.setLayout(new java.awt.GridLayout(1, 2));
+        pnFirstTwoDays.add(jLabel1);
+
+        jLabel2.setText("jLabel2");
+        pnFirstTwoDays.add(jLabel2);
+
+        jPanel1.add(pnFirstTwoDays);
+
+        pnOtherDays.setLayout(new java.awt.GridLayout(1, 3));
+
+        jLabel3.setText("jLabel3");
+        pnOtherDays.add(jLabel3);
+
+        jLabel4.setText("jLabel4");
+        pnOtherDays.add(jLabel4);
+
+        jLabel5.setText("jLabel5");
+        pnOtherDays.add(jLabel5);
+
+        jPanel1.add(pnOtherDays);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -142,6 +174,23 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_miAddActionPerformed
 
+    private void cbLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLocationActionPerformed
+        try {
+            setupinfo();
+        } catch (SAXException ex) {
+            JOptionPane.showMessageDialog(null, "Eingegebene Daten sind Fehlerhaft"
+                    + " Bitte Löschen sie diesen Datensatz und fügen sie einen ein mit richtigen Daten");
+        } catch (ParserConfigurationException ex) {
+             JOptionPane.showMessageDialog(null, "Eingegebene Daten sind Fehlerhaft"
+                    + " Bitte Löschen sie diesen Datensatz und fügen sie einen ein mit richtigen Daten");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Eingegebene Daten sind Fehlerhaft"
+                    + " Bitte Löschen sie diesen Datensatz und fügen sie einen ein mit richtigen Daten");
+        }
+        
+        
+    }//GEN-LAST:event_cbLocationActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -182,13 +231,26 @@ public class MainGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbLocation;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem miAdd;
     private javax.swing.JMenuItem miRemove;
+    private javax.swing.JPanel pnFirstTwoDays;
+    private javax.swing.JPanel pnOtherDays;
     // End of variables declaration//GEN-END:variables
+
+    private void setupinfo() throws SAXException, ParserConfigurationException, IOException {
+        WeatherClass wc =tgbl.getWeatherData(cbLocation.getSelectedIndex());
+        System.out.println(String.valueOf(wc.getList().get(0).getWeather().get(0).getDescription()));
+        jLabel1.setText(String.valueOf("Today:"+wc.getList().get(0).getWeather().get(0).getDescription()));
+    }
 
     
 

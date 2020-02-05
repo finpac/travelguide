@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LocData>
     <Location>
+        <City>Pirching</City>
+        <Zip>8081</Zip>
+        <Country>AT</Country>
+    </Location>
+    <Location>
         <City>Sankt Stefan im Rosental</City>
         <Zip>8083</Zip>
         <Country>AT</Country>

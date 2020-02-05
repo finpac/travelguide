@@ -5,19 +5,19 @@
  */
 package BL;
 
-import java.net.URI;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import DAL.OpenWeatherResponse;
+import java.util.List;
 
 /**
  *
  * @author Patrick
  */
-public class OpenWheaterResponse {
+public class WeatherClass {
+    private List <OpenWeatherResponse> list;
 
-    
+    public List<OpenWeatherResponse> getList() {
+        return list;
+    }
+
 
 }
-
