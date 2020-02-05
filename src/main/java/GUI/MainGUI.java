@@ -36,8 +36,7 @@ public class MainGUI extends javax.swing.JFrame {
         this.addWindowListener(new WindowAdapter() {
             
             public void windowClosing(WindowEvent evt) {
-//                doc = tgbl.createDocument("LocData");
-                tgbl.writeDoc(doc);
+                doc = tgbl.createDocument("LocData");
                 try {
                     tgbl.writeXML(doc);
                 } catch (IOException ex) {
@@ -52,7 +51,6 @@ public class MainGUI extends javax.swing.JFrame {
         {
             for (int i = 0; i < tgbl.getLocdata().size(); i++) {
                 cbLocation.addItem(tgbl.getLocdata().get(i).city);
-                System.out.println(""+tgbl.getLocdata().get(i).city);
             }  
             cbLocation.updateUI();
         }
