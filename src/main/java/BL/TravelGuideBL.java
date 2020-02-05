@@ -12,6 +12,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -19,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -71,18 +74,13 @@ public class TravelGuideBL {
         return d;
     }
 
-    /**
-     * Preperation to save the xml
-     */
-    public void writeDoc(Document doc) {
-        
-        
-    }
     /*
-        This Methode deletes the old xml und writes the updated xml
+        This Methode deletes the old xml if exists and writes the updated xml with 
+        the common hierarchy
         https://developers.google.com/apps-script/reference/xml-service/format
     */
-    public void writeXML(Document doc) throws FileNotFoundException, IOException { 
+    public void writeXML(Document doc) throws FileNotFoundException, IOException 
+    {         
         Element e1 = new Element("Location");
         Element e2 = new Element("City");
         Element e3 = new Element("Zip");
@@ -95,6 +93,7 @@ public class TravelGuideBL {
             e1.addContent(e3);
             e1.addContent(e4);
             doc.getRootElement().addContent(e1);
+        }
             
         Format format = Format.getCompactFormat();
         format.setIndent("    ");
@@ -114,9 +113,15 @@ public class TravelGuideBL {
     /**
         This Methode loads the saved XML file into a document
          */
-    public void loadData() throws Exception {       
+    public void loadData()   {       
         SAXBuilder sbuilder = new SAXBuilder();
-        docu = sbuilder.build(FILE);
+        try {
+            docu = sbuilder.build(FILE);
+        } catch (JDOMException ex) {
+            Logger.getLogger(TravelGuideBL.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TravelGuideBL.class.getName()).log(Level.SEVERE, null, ex);
+        }
         getData();
     }
     /**
