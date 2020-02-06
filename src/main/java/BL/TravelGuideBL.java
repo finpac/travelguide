@@ -44,6 +44,8 @@ public class TravelGuideBL {
     public TravelGuideBL respo;
     
     private List <OpenWeatherResponse> list;
+    
+    private boolean zipnotfound =false;
 
     public List<OpenWeatherResponse> getList() {
         return list;
@@ -54,10 +56,8 @@ public class TravelGuideBL {
         Client c = ClientBuilder.newClient();
         
         Response resp ;    
-        
-        
-                
-        if(!locdata.get(i).getZip().isEmpty())
+    
+        if(!locdata.get(i).getZip().isEmpty() && !zipnotfound)
         {           
             resp = c.target(URI).path(PATH).queryParam("appid", APPID)
                   .queryParam("zip",locdata.get(i).getZip() + "," + 
@@ -70,18 +70,21 @@ public class TravelGuideBL {
           respo = new Gson().fromJson(jsonStrg, TravelGuideBL.class);
           if(resp.getStatus() == 404)
           {
-              JOptionPane.showMessageDialog(null , "ZIP not found", "The entered zip could not be found", JOptionPane.ERROR_MESSAGE);
+              //JOptionPane.showMessageDialog(null , "ZIP not found", "The entered zip could not be found", JOptionPane.ERROR_MESSAGE);
+              zipnotfound = true;
+              getWeatherData(i);
           }
         }
-        else if(locdata.get(i).getZip().isEmpty())
+        else if(locdata.get(i).getZip().isEmpty() || zipnotfound)
         {
             resp = c.target(URI).path(PATH).queryParam("appid", APPID)
-                    .queryParam("zip", locdata.get(i).getCity() + ","
+                    .queryParam("q", locdata.get(i).getCity() + ","
                             + locdata.get(i).getCountry())
                     .request(MediaType.APPLICATION_JSON)
                     .get();
             String jsonStrg = resp.readEntity(String.class);
             respo = new Gson().fromJson(jsonStrg, TravelGuideBL.class);
+            zipnotfound = false;
             if(resp.getStatus() == 404)
             {
                 JOptionPane.showMessageDialog(null , "City and ZIP not found", "The entered City and ZIP could not be found", JOptionPane.ERROR_MESSAGE);

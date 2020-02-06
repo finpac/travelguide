@@ -10,8 +10,12 @@ import BL.TravelGuideBL;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import org.jdom2.Document;
@@ -86,6 +90,7 @@ public class MainGUI extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(480, 300));
 
         cbLocation.setModel(new javax.swing.DefaultComboBoxModel<>());
         cbLocation.addActionListener(new java.awt.event.ActionListener() {
@@ -172,19 +177,26 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_miAddActionPerformed
 
     private void cbLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLocationActionPerformed
+        TravelGuideBL bl =tgbl.getWeatherData(cbLocation.getSelectedIndex());
+        System.out.println(String.valueOf(bl.getList().get(0).getWeather().get(0).getDescription()));
         try {
-            setupinfo();
-        } catch (SAXException ex) {
-            JOptionPane.showMessageDialog(null, "Eingegebene Daten sind Fehlerhaft"
-                    + " Bitte Löschen sie diesen Datensatz und fügen sie einen ein mit richtigen Daten");
-        } catch (ParserConfigurationException ex) {
-             JOptionPane.showMessageDialog(null, "Eingegebene Daten sind Fehlerhaft"
-                    + " Bitte Löschen sie diesen Datensatz und fügen sie einen ein mit richtigen Daten");
+            //jLabel1.setText(String.valueOf("Today:"+bl.getList().get(0).getWeather().get(0).getDescription()+ " "+ (bl.getList().get(0).getMain().getTemp() - 273.15)+" "));
+            jLabel1.setText("<html><body>TODAY<br>"+bl.getList().get(0).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.getList().get(0).getMain().getTemp() - 273.15).substring(0, 3)+" °C <br>"+String.valueOf(bl.getList().get(0).getMain().getTemp_min() - 273.15).substring(0, 4)+"° / "+ String.valueOf(bl.getList().get(0).getMain().getTemp_max() - 273.15).substring(0, 4)+"°</body></html>");
+            jLabel1.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(0).getWeather().get(0).getIcon()+".png"))));
+            jLabel2.setText("<html><body>TOMORROW<br>"+bl.getList().get(1).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.getList().get(1).getMain().getTemp() - 273.15).substring(0, 3)+" °C<br>"+String.valueOf(bl.getList().get(1).getMain().getTemp_min() - 273.15).substring(0, 4)+"° / "+ String.valueOf(bl.getList().get(1).getMain().getTemp_max() - 273.15).substring(0, 4)+ "°</body></html>");
+            jLabel2.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(1).getWeather().get(0).getIcon()+".png"))));
+            jLabel3.setText("<html><body>"+bl.getList().get(2).getDt_txt().replace('-', '.').substring(0, 10)+"<br>"+bl.getList().get(2).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.getList().get(2).getMain().getTemp_min() - 273.15).substring(0, 4)+"° / "+ String.valueOf(bl.getList().get(2).getMain().getTemp_max() - 273.15).substring(0, 4)+" ° C</body></html>");
+            jLabel3.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(2).getWeather().get(0).getIcon()+".png"))));
+            jLabel4.setText("<html><body>"+bl.getList().get(3).getDt_txt().replace('-', '.').substring(0, 10)+"<br>"+bl.getList().get(3).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.getList().get(3).getMain().getTemp_min() - 273.15).substring(0, 4)+"° / "+ String.valueOf(bl.getList().get(3).getMain().getTemp_max() - 273.15).substring(0, 4)+" °C</body></html>");
+            jLabel4.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(3).getWeather().get(0).getIcon()+".png"))));
+            jLabel5.setText("<html><body>"+bl.getList().get(4).getDt_txt().replace('-', '.').substring(0, 10)+"<br>"+bl.getList().get(4).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.getList().get(4).getMain().getTemp_min() - 273.15).substring(0, 4)+"° / "+ String.valueOf(bl.getList().get(4).getMain().getTemp_max() - 273.15).substring(0, 4)+" °C</body></html>");
+            jLabel5.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(4).getWeather().get(0).getIcon()+".png"))));
+            
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Eingegebene Daten sind Fehlerhaft"
-                    + " Bitte Löschen sie diesen Datensatz und fügen sie einen ein mit richtigen Daten");
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         
     }//GEN-LAST:event_cbLocationActionPerformed
 
@@ -242,13 +254,5 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JPanel pnFirstTwoDays;
     private javax.swing.JPanel pnOtherDays;
     // End of variables declaration//GEN-END:variables
-
-    private void setupinfo() throws SAXException, ParserConfigurationException, IOException {
-        TravelGuideBL wc =tgbl.getWeatherData(cbLocation.getSelectedIndex());
-        System.out.println(String.valueOf(wc.getList().get(0).getWeather().get(0).getDescription()));
-        jLabel1.setText(String.valueOf("Today:"+wc.getList().get(0).getWeather().get(0).getDescription()));
-    }
-
-    
 
 }

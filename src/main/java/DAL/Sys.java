@@ -11,6 +11,7 @@ public class Sys {
     private String country;
     private long sunrise;
     private long sunset;
+    
 
     public int getType() {
         return type;
