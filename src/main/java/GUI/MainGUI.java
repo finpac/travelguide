@@ -7,12 +7,9 @@
 package GUI;
 
 import BL.TravelGuideBL;
-import BL.WeatherClass;
-import DAL.OpenWeatherResponse;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -247,7 +244,7 @@ public class MainGUI extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void setupinfo() throws SAXException, ParserConfigurationException, IOException {
-        WeatherClass wc =tgbl.getWeatherData(cbLocation.getSelectedIndex());
+        TravelGuideBL wc =tgbl.getWeatherData(cbLocation.getSelectedIndex());
         System.out.println(String.valueOf(wc.getList().get(0).getWeather().get(0).getDescription()));
         jLabel1.setText(String.valueOf("Today:"+wc.getList().get(0).getWeather().get(0).getDescription()));
     }

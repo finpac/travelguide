@@ -41,9 +41,15 @@ public class TravelGuideBL {
     private static final String APPID = "a291907fdfb9543a4227821d089b5bf0";
     private final static File FILE = new File("Location.xml");
     private Document docu;
-    public WeatherClass response;
+    public TravelGuideBL respo;
+    
+    private List <OpenWeatherResponse> list;
 
-    public WeatherClass getWeatherData(int i)
+    public List<OpenWeatherResponse> getList() {
+        return list;
+    }
+
+    public TravelGuideBL getWeatherData(int i)
     {
         Client c = ClientBuilder.newClient();
         
@@ -61,7 +67,7 @@ public class TravelGuideBL {
 
           String jsonStrg = resp.readEntity(String.class);
           System.out.println(jsonStrg);
-          response = new Gson().fromJson(jsonStrg, WeatherClass.class);
+          respo = new Gson().fromJson(jsonStrg, TravelGuideBL.class);
           if(resp.getStatus() == 404)
           {
               JOptionPane.showMessageDialog(null , "ZIP not found", "The entered zip could not be found", JOptionPane.ERROR_MESSAGE);
@@ -75,14 +81,14 @@ public class TravelGuideBL {
                     .request(MediaType.APPLICATION_JSON)
                     .get();
             String jsonStrg = resp.readEntity(String.class);
-            response = new Gson().fromJson(jsonStrg, WeatherClass.class);
+            respo = new Gson().fromJson(jsonStrg, TravelGuideBL.class);
             if(resp.getStatus() == 404)
             {
                 JOptionPane.showMessageDialog(null , "City and ZIP not found", "The entered City and ZIP could not be found", JOptionPane.ERROR_MESSAGE);
             }
         }
         
-        return response;  
+        return respo;  
     }
 
     public void addLocation(LocationData ld) {
@@ -128,7 +134,7 @@ public class TravelGuideBL {
     */
     public void writeXML(Document doc) throws FileNotFoundException, IOException 
     {                    
-        Format format = Format.getPrettyFormat();
+        Format format = Format.getCompactFormat();
         format.setIndent("    ");
         try {
             boolean isCreated = FILE.createNewFile();

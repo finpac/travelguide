@@ -10,4 +10,14 @@
         <Zip>8083</Zip>
         <Country>AT</Country>
     </Location>
+    <Location>
+        <City>Sankt Stefan im Rosental</City>
+        <Zip>808</Zip>
+        <Country>AT</Country>
+    </Location>
+    <Location>
+        <City>hh</City>
+        <Zip>808</Zip>
+        <Country>AT</Country>
+    </Location>
 </LocData>
