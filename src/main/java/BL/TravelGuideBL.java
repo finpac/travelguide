@@ -41,10 +41,8 @@ public class TravelGuideBL {
     private static final String APPID = "a291907fdfb9543a4227821d089b5bf0";
     private final static File FILE = new File("Location.xml");
     private Document docu;
-    public TravelGuideBL respo;
-    
-    private List <OpenWeatherResponse> list;
-    
+    public TravelGuideBL respo;   
+    private List <OpenWeatherResponse> list;   
     private boolean zipnotfound =false;
 
     public List<OpenWeatherResponse> getList() {
@@ -66,7 +64,7 @@ public class TravelGuideBL {
                   .get();
 
           String jsonStrg = resp.readEntity(String.class);
-          System.out.println(jsonStrg);
+         // System.out.println(jsonStrg);
           respo = new Gson().fromJson(jsonStrg, TravelGuideBL.class);
           if(resp.getStatus() == 404)
           {
@@ -77,9 +75,9 @@ public class TravelGuideBL {
         }
         else if(locdata.get(i).getZip().isEmpty() || zipnotfound)
         {
-            resp = c.target(URI).path(PATH).queryParam("appid", APPID)
-                    .queryParam("q", locdata.get(i).getCity() + ","
-                            + locdata.get(i).getCountry())
+            resp = c.target(URI).path(PATH)
+                    .queryParam("q", locdata.get(i).getCity())
+                    .queryParam("appid", APPID)
                     .request(MediaType.APPLICATION_JSON)
                     .get();
             String jsonStrg = resp.readEntity(String.class);
@@ -87,7 +85,7 @@ public class TravelGuideBL {
             zipnotfound = false;
             if(resp.getStatus() == 404)
             {
-                JOptionPane.showMessageDialog(null , "City and ZIP not found", "The entered City and ZIP could not be found", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null , "City and ZIP not found", "The entered City and ZIP could not be found or the Country is invalid", JOptionPane.ERROR_MESSAGE);
             }
         }
         
@@ -198,5 +196,32 @@ public class TravelGuideBL {
     public void remove(int selectedIndex) {
         locdata.remove(selectedIndex);
     }
+    
+    public float avgmaxTemp(int threehourzone)
+    {
+        float tempDayMax = (float) ((getList().get(threehourzone).getMain().getTemp_max() 
+                + getList().get(threehourzone+3).getMain().getTemp_max()
+                + getList().get(threehourzone+7).getMain().getTemp_max())/3
+                - 273.15); 
+        return tempDayMax;
+    }
+    
+    public float avgminTemp(int threehourzone)
+    {
+        float tempDayMin = (float) ((getList().get(threehourzone+3).getMain().getTemp_min()
+                +getList().get(threehourzone+3).getMain().getTemp_min()
+                +getList().get(threehourzone+7).getMain().getTemp_min())/3
+                -273.15);
+        return tempDayMin;
+    }
+    
+    public float avgTemp(int threehourzone)
+    {
+        float tempDay = (float) ((getList().get(threehourzone).getMain().getTemp()
+                +getList().get(threehourzone+3).getMain().getTemp()
+                +getList().get(threehourzone+7).getMain().getTemp())/3 -273.15);
+        return tempDay;
+    }
+    
     
 }

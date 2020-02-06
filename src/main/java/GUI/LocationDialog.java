@@ -118,7 +118,7 @@ public class LocationDialog extends javax.swing.JDialog {
         city = tfCity.getText();
         country = tfCountry.getText();
         
-        if(zip.isEmpty() && city.isEmpty() || country.isEmpty())
+        if(zip.isEmpty() && city.isEmpty())
         {
             JOptionPane.showMessageDialog(this, "Eingabe vervollständigen");
         }

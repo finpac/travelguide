@@ -17,9 +17,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.xml.parsers.ParserConfigurationException;
 import org.jdom2.Document;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -90,7 +88,7 @@ public class MainGUI extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(480, 300));
+        setMinimumSize(new java.awt.Dimension(500, 330));
 
         cbLocation.setModel(new javax.swing.DefaultComboBoxModel<>());
         cbLocation.addActionListener(new java.awt.event.ActionListener() {
@@ -179,19 +177,29 @@ public class MainGUI extends javax.swing.JFrame {
     private void cbLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLocationActionPerformed
         TravelGuideBL bl =tgbl.getWeatherData(cbLocation.getSelectedIndex());
         System.out.println(String.valueOf(bl.getList().get(0).getWeather().get(0).getDescription()));
+        int forecastNum = 0;
         try {
             //jLabel1.setText(String.valueOf("Today:"+bl.getList().get(0).getWeather().get(0).getDescription()+ " "+ (bl.getList().get(0).getMain().getTemp() - 273.15)+" "));
-            jLabel1.setText("<html><body>TODAY<br>"+bl.getList().get(0).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.getList().get(0).getMain().getTemp() - 273.15).substring(0, 3)+" °C <br>"+String.valueOf(bl.getList().get(0).getMain().getTemp_min() - 273.15).substring(0, 4)+"° / "+ String.valueOf(bl.getList().get(0).getMain().getTemp_max() - 273.15).substring(0, 4)+"°</body></html>");
+            for(int i = 0; i < 9; i++)
+            {
+                if(!bl.getList().get(0).getDt_txt().substring(0, 10).equals(bl.getList().get(i).getDt_txt().substring(0, 10)))
+                {
+                    forecastNum = i;
+                    System.out.println(forecastNum);
+                    break;
+                }
+            }
+           
+            jLabel1.setText("<html><body><h2>TODAY</h2><p style='font-size:130%;'>"+String.valueOf(bl.avgTemp(0)).substring(0, 4)+" °C </p>"+bl.getList().get(0).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.avgminTemp(0)).substring(0, 4)+"° / "+ String.valueOf(bl.avgmaxTemp(0)).substring(0, 4)+"°</body></html>");
             jLabel1.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(0).getWeather().get(0).getIcon()+".png"))));
-            jLabel2.setText("<html><body>TOMORROW<br>"+bl.getList().get(1).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.getList().get(1).getMain().getTemp() - 273.15).substring(0, 3)+" °C<br>"+String.valueOf(bl.getList().get(1).getMain().getTemp_min() - 273.15).substring(0, 4)+"° / "+ String.valueOf(bl.getList().get(1).getMain().getTemp_max() - 273.15).substring(0, 4)+ "°</body></html>");
-            jLabel2.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(1).getWeather().get(0).getIcon()+".png"))));
-            jLabel3.setText("<html><body>"+bl.getList().get(2).getDt_txt().replace('-', '.').substring(0, 10)+"<br>"+bl.getList().get(2).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.getList().get(2).getMain().getTemp_min() - 273.15).substring(0, 4)+"° / "+ String.valueOf(bl.getList().get(2).getMain().getTemp_max() - 273.15).substring(0, 4)+" ° C</body></html>");
-            jLabel3.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(2).getWeather().get(0).getIcon()+".png"))));
-            jLabel4.setText("<html><body>"+bl.getList().get(3).getDt_txt().replace('-', '.').substring(0, 10)+"<br>"+bl.getList().get(3).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.getList().get(3).getMain().getTemp_min() - 273.15).substring(0, 4)+"° / "+ String.valueOf(bl.getList().get(3).getMain().getTemp_max() - 273.15).substring(0, 4)+" °C</body></html>");
-            jLabel4.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(3).getWeather().get(0).getIcon()+".png"))));
-            jLabel5.setText("<html><body>"+bl.getList().get(4).getDt_txt().replace('-', '.').substring(0, 10)+"<br>"+bl.getList().get(4).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.getList().get(4).getMain().getTemp_min() - 273.15).substring(0, 4)+"° / "+ String.valueOf(bl.getList().get(4).getMain().getTemp_max() - 273.15).substring(0, 4)+" °C</body></html>");
-            jLabel5.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(4).getWeather().get(0).getIcon()+".png"))));
-            
+            jLabel2.setText("<html><body><h2>TOMORROW</h2><p style='font-size:130%;'>"+String.valueOf(bl.avgTemp(forecastNum)).substring(0, 3)+" °C</p>"+bl.getList().get(8).getWeather().get(0).getDescription()+" <br>"+String.valueOf(bl.avgminTemp(forecastNum)).substring(0, 4)+"° / "+ String.valueOf(bl.avgmaxTemp(forecastNum)).substring(0, 4)+ "°</body></html>");
+            jLabel2.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(8).getWeather().get(0).getIcon()+".png"))));
+            jLabel3.setText("<html><body><h3>"+bl.getList().get(16).getDt_txt().replace('-', '.').substring(0, 10)+"</h3>"+bl.getList().get(16).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.avgminTemp(forecastNum+8)).substring(0, 4)+"° / "+ String.valueOf(bl.avgmaxTemp(forecastNum+8)).substring(0, 4)+" ° C</body></html>");
+            jLabel3.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(16).getWeather().get(0).getIcon()+".png"))));
+            jLabel4.setText("<html><body><h3>"+bl.getList().get(24).getDt_txt().replace('-', '.').substring(0, 10)+"</h3>"+bl.getList().get(24).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.avgminTemp(forecastNum+16)).substring(0, 4)+"° / "+ String.valueOf(bl.avgmaxTemp(forecastNum+16)).substring(0, 4)+" °C</body></html>");
+            jLabel4.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(24).getWeather().get(0).getIcon()+".png"))));
+            jLabel5.setText("<html><body><h3>"+bl.getList().get(32).getDt_txt().replace('-', '.').substring(0, 10)+"</h3>"+bl.getList().get(32).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.avgminTemp(forecastNum+24)).substring(0, 4)+"° / "+ String.valueOf(bl.avgmaxTemp(forecastNum+24)).substring(0, 4)+" °C</body></html>");
+            jLabel5.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(32).getWeather().get(0).getIcon()+".png"))));       
         } catch (MalformedURLException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
