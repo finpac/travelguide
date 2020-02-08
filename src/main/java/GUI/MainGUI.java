@@ -86,10 +86,14 @@ public class MainGUI extends javax.swing.JFrame {
         miAdd = new javax.swing.JMenuItem();
         miRemove = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        miComp = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(500, 330));
+        setTitle("WeatherTraveller");
+        setMinimumSize(new java.awt.Dimension(500, 370));
 
+        cbLocation.setForeground(new java.awt.Color(255, 255, 255));
+        cbLocation.setMaximumRowCount(20);
         cbLocation.setModel(new javax.swing.DefaultComboBoxModel<>());
         cbLocation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,22 +104,32 @@ public class MainGUI extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridLayout(2, 0));
 
+        pnFirstTwoDays.setBackground(new java.awt.Color(0, 102, 153));
+        pnFirstTwoDays.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         pnFirstTwoDays.setLayout(new java.awt.GridLayout(1, 2));
+
+        jLabel1.setForeground(new java.awt.Color(255, 204, 0));
         pnFirstTwoDays.add(jLabel1);
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("jLabel2");
         pnFirstTwoDays.add(jLabel2);
 
         jPanel1.add(pnFirstTwoDays);
 
+        pnOtherDays.setBackground(new java.awt.Color(0, 153, 204));
+        pnOtherDays.setForeground(new java.awt.Color(255, 255, 255));
         pnOtherDays.setLayout(new java.awt.GridLayout(1, 3));
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("jLabel3");
         pnOtherDays.add(jLabel3);
 
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("jLabel4");
         pnOtherDays.add(jLabel4);
 
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("jLabel5");
         pnOtherDays.add(jLabel5);
 
@@ -123,7 +137,10 @@ public class MainGUI extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        jMenu1.setText("File");
+        jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
+        jMenuBar1.setForeground(new java.awt.Color(255, 255, 255));
+
+        jMenu1.setText("Edit");
 
         miAdd.setText("Add");
         miAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -143,7 +160,16 @@ public class MainGUI extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Option");
+
+        miComp.setText("Compare");
+        miComp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miCompActionPerformed(evt);
+            }
+        });
+        jMenu2.add(miComp);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -176,37 +202,60 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void cbLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLocationActionPerformed
         TravelGuideBL bl =tgbl.getWeatherData(cbLocation.getSelectedIndex());
-        System.out.println(String.valueOf(bl.getList().get(0).getWeather().get(0).getDescription()));
-        int forecastNum = 0;
+        //System.out.println(String.valueOf(bl.getList().get(0).getWeather().get(0).getDescription()));
         try {
             //jLabel1.setText(String.valueOf("Today:"+bl.getList().get(0).getWeather().get(0).getDescription()+ " "+ (bl.getList().get(0).getMain().getTemp() - 273.15)+" "));
-            for(int i = 0; i < 9; i++)
-            {
-                if(!bl.getList().get(0).getDt_txt().substring(0, 10).equals(bl.getList().get(i).getDt_txt().substring(0, 10)))
-                {
-                    forecastNum = i;
-                    System.out.println(forecastNum);
-                    break;
-                }
-            }
-           
-            jLabel1.setText("<html><body><h2>TODAY</h2><p style='font-size:130%;'>"+String.valueOf(bl.avgTemp(0)).substring(0, 4)+" °C </p>"+bl.getList().get(0).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.avgminTemp(0)).substring(0, 4)+"° / "+ String.valueOf(bl.avgmaxTemp(0)).substring(0, 4)+"°</body></html>");
+            jLabel1.setText("<html><body><h2>TODAY</h2><p style='font-size:130%;'>"
+                    +String.valueOf(bl.avgTemp(0)).substring(0, 4)+" °C </p>"
+                    +bl.getList().get(0).getWeather().get(0).getDescription()+"<br>Min/Max: "
+                    +String.valueOf(bl.avgminTemp(0)).substring(0, 4)+"° / "
+                    + String.valueOf(bl.avgmaxTemp(0)).substring(0, 4)
+                    +"°<br>Humidity: "+bl.getList().get(0).getMain().getHumidity() +
+                    "%<br>Pressure: "+bl.getList().get(0).getMain().getPressure()
+                    +"hPa</body></html>");
             jLabel1.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(0).getWeather().get(0).getIcon()+".png"))));
-            jLabel2.setText("<html><body><h2>TOMORROW</h2><p style='font-size:130%;'>"+String.valueOf(bl.avgTemp(forecastNum)).substring(0, 3)+" °C</p>"+bl.getList().get(8).getWeather().get(0).getDescription()+" <br>"+String.valueOf(bl.avgminTemp(forecastNum)).substring(0, 4)+"° / "+ String.valueOf(bl.avgmaxTemp(forecastNum)).substring(0, 4)+ "°</body></html>");
+            jLabel2.setText("<html><body><h2>TOMORROW</h2><p style='font-size:130%;'>"
+                    +String.valueOf(bl.avgTemp(bl.getNextDay())).substring(0, 3)+" °C</p>"
+                    +bl.getList().get(8).getWeather().get(0).getDescription()+" <br>Min/Max: "
+                    +String.valueOf(bl.avgminTemp(bl.getNextDay())).substring(0, 4)+"° / "
+                    + String.valueOf(bl.avgmaxTemp(bl.getNextDay())).substring(0, 4)
+                    +"°<br>Humidity: "+bl.getList().get(8).getMain().getHumidity() +
+                    "%<br>Pressure: "+bl.getList().get(8).getMain().getPressure()
+                    +"hPa</body></html>");
             jLabel2.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(8).getWeather().get(0).getIcon()+".png"))));
-            jLabel3.setText("<html><body><h3>"+bl.getList().get(16).getDt_txt().replace('-', '.').substring(0, 10)+"</h3>"+bl.getList().get(16).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.avgminTemp(forecastNum+8)).substring(0, 4)+"° / "+ String.valueOf(bl.avgmaxTemp(forecastNum+8)).substring(0, 4)+" ° C</body></html>");
+            jLabel3.setText("<html><body><h3>"
+                    +bl.getList().get(16).getDt_txt().replace('-', '.').substring(0, 10)+"</h3>"
+                    +String.valueOf(bl.avgminTemp(bl.getNextDay()+8)).substring(0, 4)+"° / "
+                    + String.valueOf(bl.avgmaxTemp(bl.getNextDay()+8)).substring(0, 4)
+                    +" °C<br>"+bl.getList().get(16).getWeather().get(0).getDescription()
+                    +"</body></html>");
             jLabel3.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(16).getWeather().get(0).getIcon()+".png"))));
-            jLabel4.setText("<html><body><h3>"+bl.getList().get(24).getDt_txt().replace('-', '.').substring(0, 10)+"</h3>"+bl.getList().get(24).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.avgminTemp(forecastNum+16)).substring(0, 4)+"° / "+ String.valueOf(bl.avgmaxTemp(forecastNum+16)).substring(0, 4)+" °C</body></html>");
+            jLabel4.setText("<html><body><h3>"
+                    +bl.getList().get(24).getDt_txt().replace('-', '.').substring(0, 10)+"</h3>"
+                    +String.valueOf(bl.avgminTemp(bl.getNextDay()+16)).substring(0, 4)
+                    +"° / "+ String.valueOf(bl.avgmaxTemp(bl.getNextDay()+16)).substring(0, 4)
+                    +" °C<br>"+bl.getList().get(24).getWeather().get(0).getDescription()
+                    +"</body></html>");
             jLabel4.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(24).getWeather().get(0).getIcon()+".png"))));
-            jLabel5.setText("<html><body><h3>"+bl.getList().get(32).getDt_txt().replace('-', '.').substring(0, 10)+"</h3>"+bl.getList().get(32).getWeather().get(0).getDescription()+"<br>"+String.valueOf(bl.avgminTemp(forecastNum+24)).substring(0, 4)+"° / "+ String.valueOf(bl.avgmaxTemp(forecastNum+24)).substring(0, 4)+" °C</body></html>");
+            jLabel5.setText("<html><body><h3>"
+                    +bl.getList().get(32).getDt_txt().replace('-', '.').substring(0, 10)
+                    +"</h3>"+String.valueOf(bl.avgminTemp(bl.getNextDay()+24)).substring(0, 4)
+                    +"° / "+ String.valueOf(bl.avgmaxTemp(bl.getNextDay()+24)).substring(0, 4)
+                    +" °C<br>"+bl.getList().get(32).getWeather().get(0).getDescription()
+                    +"</body></html>");
             jLabel5.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(32).getWeather().get(0).getIcon()+".png"))));       
         } catch (MalformedURLException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }//GEN-LAST:event_cbLocationActionPerformed
+
+    private void miCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCompActionPerformed
+        CompareToolDialog ctd = new CompareToolDialog(this, true);
+        ctd.setVisible(true);
+        
+    }//GEN-LAST:event_miCompActionPerformed
 
     /**
      * @param args the command line arguments
@@ -258,6 +307,7 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem miAdd;
+    private javax.swing.JMenuItem miComp;
     private javax.swing.JMenuItem miRemove;
     private javax.swing.JPanel pnFirstTwoDays;
     private javax.swing.JPanel pnOtherDays;

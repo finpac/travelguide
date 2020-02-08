@@ -5,6 +5,7 @@
  */
 package BL;
 
+import DAL.Day;
 import DAL.LocationData;
 import com.google.gson.Gson;
 import java.io.File;
@@ -35,7 +36,6 @@ import org.jdom2.output.XMLOutputter;
 public class TravelGuideBL {
     
     public ArrayList <LocationData> locdata = new ArrayList <> ();
-    
     private static final String URI = "http://api.openweathermap.org/data/2.5/";
     private static final String PATH = "forecast";
     private static final String APPID = "a291907fdfb9543a4227821d089b5bf0";
@@ -44,7 +44,8 @@ public class TravelGuideBL {
     public TravelGuideBL respo;   
     private List <OpenWeatherResponse> list;   
     private boolean zipnotfound =false;
-
+   
+    
     public List<OpenWeatherResponse> getList() {
         return list;
     }
@@ -94,6 +95,10 @@ public class TravelGuideBL {
 
     public void addLocation(LocationData ld) {
         locdata.add(ld);
+    }
+    
+    public void remove(int selectedIndex) {
+        locdata.remove(selectedIndex);
     }
 
     public ArrayList<LocationData> getLocdata() {
@@ -167,7 +172,7 @@ public class TravelGuideBL {
     /**
         This Methode gets the Data from the saved XML
          */
-    private void getData() {       
+    public void getData() {       
         Element root = docu.getRootElement();
         List<Element> data = root.getChildren("Location");
         for (Element b : data) {
@@ -192,9 +197,20 @@ public class TravelGuideBL {
             locdata.add(new LocationData(cities, zip, country));
         }
     }
-
-    public void remove(int selectedIndex) {
-        locdata.remove(selectedIndex);
+   
+    public int getNextDay()
+    {
+        int forecastNum = 0;
+        for(int i = 0; i < 9; i++)
+            {
+                if(!getList().get(0).getDt_txt().substring(0, 10).equals(getList().get(i).getDt_txt().substring(0, 10)))
+                {
+                    forecastNum = i;
+//                    System.out.println(forecastNum);
+                    break;
+                }
+            }
+        return forecastNum;
     }
     
     public float avgmaxTemp(int threehourzone)
@@ -223,5 +239,20 @@ public class TravelGuideBL {
         return tempDay;
     }
     
+    public float avgHumidity(int threehourzone)
+    {
+        float humidDay = (float) ((getList().get(threehourzone).getMain().getHumidity()
+                +getList().get(threehourzone+3).getMain().getHumidity()
+                +getList().get(threehourzone+7).getMain().getHumidity())/3);
+        return humidDay;
+    }
     
+    public float avgPressure(int threehourzone)
+    {
+        float pressDay = (float) ((getList().get(threehourzone).getMain().getPressure()
+                +getList().get(threehourzone+3).getMain().getPressure()
+                +getList().get(threehourzone+7).getMain().getPressure())/3);
+        
+        return pressDay;
+    }
 }
