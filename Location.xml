@@ -20,4 +20,9 @@
         <Zip />
         <Country />
     </Location>
+    <Location>
+        <City>Sankt Nikolai im Sausal</City>
+        <Zip />
+        <Country>AT</Country>
+    </Location>
 </LocData>

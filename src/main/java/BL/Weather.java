@@ -8,6 +8,7 @@ package BL;
 /**
  *
  * @author Patrick
+ * unused preparation for a Database
  */
 public class Weather {
     private int weatherID;

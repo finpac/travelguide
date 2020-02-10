@@ -13,10 +13,83 @@ import javax.swing.table.AbstractTableModel;
  */
 public class WeatherTableModel extends AbstractTableModel {
     
-    private ArrayList<WeatherComperation> weather = new ArrayList<>();
-    
+    private ArrayList<WeatherComperation> wcomp = new ArrayList<>();    
+   
     /**
-    Sort Algorythms by temp
+    Add the data for the comperationList
+     */
+    public void addWeatherData(WeatherComperation w) {
+        wcomp.add(w);
+    }
+    /**
+    Get the data from a selected index of the comperationList
+     */
+    public WeatherComperation getWeatherData(int index)
+    {
+        return wcomp.get(index);
+    }
+    /**
+    clears the data of the comperationList
+     */
+    public void clearPurposeList() {
+        wcomp.clear();
+    }
+
+    /**TableModel methods
+     * 
+     * @return 
+     */
+    @Override
+    public int getRowCount() {
+        return wcomp.size();
+    }
+    private String[] columntext = {
+        "City", "Temperature", "Humidity", "Preasure"
+    };
+
+    @Override
+    public String getColumnName(int column) {
+        return columntext[column];
+    }
+
+    @Override
+    public int getColumnCount() {
+        return columntext.length;
+    }
+
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return wcomp.get(rowIndex).getCity();
+            case 1:
+                return String.valueOf(wcomp.get(rowIndex).getTemp()).substring(0, 4) +" °C";
+            case 2:
+                return wcomp.get(rowIndex).getHumidity() + " %";
+            case 3:
+                return wcomp.get(rowIndex).getAirPressure()+ " hPa";
+            default:
+                return "no data";
+        }
+    }
+
+    /**
+    Check which selection should be run
+     */
+    public void sortList(int sortSelection) {
+        if (sortSelection == 1) {
+            wcomp.sort(compareByTemp);
+        }
+        if (sortSelection == 2) {
+            wcomp.sort(compareByHumidity);
+        }
+        if (sortSelection == 3) {
+            wcomp.sort(compareByPreasure);
+        }
+    }
+    
+     /**
+     Compares the temps
      */
     private Comparator<WeatherComperation> compareByTemp = new Comparator<WeatherComperation>() {
         @Override
@@ -27,16 +100,16 @@ public class WeatherTableModel extends AbstractTableModel {
         }
     };
     /**
-    Sort Algorythms by humidity
+    Compares the humidities
      */
     private Comparator<WeatherComperation> compareByHumidity = new Comparator<WeatherComperation>() {
         @Override
         public int compare(WeatherComperation o1, WeatherComperation o2) {
-            return o1.getHumidity() > o2.getHumidity() ? -1 : (o1.getHumidity() < o2.getHumidity()) ? 1 : 0;
+            return o1.getHumidity() > o2.getHumidity() ? -1 : (o1.getHumidity() > o2.getHumidity()) ? 1 : 0;
         }
     };
     /**
-    Sort Algorythms by preasure
+    Compares the preasures
      */
     private Comparator<WeatherComperation> compareByPreasure = new Comparator<WeatherComperation>() {
         @Override
@@ -44,75 +117,4 @@ public class WeatherTableModel extends AbstractTableModel {
             return o1.getAirPressure()> o2.getAirPressure()? -1 : (o1.getAirPressure()< o2.getAirPressure()) ? 1 : 0;
         }
     };
-
-    /**
-    adds the weahterdata 
-     */
-    public void addWeatherData(WeatherComperation w) {
-        weather.add(w);
-    }
-    /**
-    gets weatherdata
-     */
-    public WeatherComperation getWeatherData(int index)
-    {
-        return weather.get(index);
-    }
-    /**
-    clears weatherList
-     */
-    public void clearPurposeList() {
-        weather.clear();
-    }
-
-    @Override
-    public int getRowCount() {
-        return weather.size();
-    }
-    private String[] wp = {
-        "Ort", "Temperatur", "Feuchtigkeit", "Luftdruck"
-    };
-
-    @Override
-    public String getColumnName(int column) {
-        return wp[column];
-    }
-
-    @Override
-    public int getColumnCount() {
-        return wp.length;
-    }
-
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-                return weather.get(rowIndex).getCity();
-            case 1:
-                return String.valueOf(weather.get(rowIndex).getTemp()).substring(0, 4) +" C°";
-            case 2:
-                return weather.get(rowIndex).getHumidity() + " %";
-            case 3:
-                return weather.get(rowIndex).getAirPressure()+ " hPa";
-            default:
-                return "error";
-
-        }
-    }
-
-    /**
-    Which sort methode was choosen 
-     */
-    public void sortList(int sortMech) {
-        if (sortMech == 1) {
-            weather.sort(compareByTemp);
-        }
-        if (sortMech == 2) {
-            weather.sort(compareByHumidity);
-        }
-        if (sortMech == 3) {
-            weather.sort(compareByPreasure);
-        }
-
-    }
 }

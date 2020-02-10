@@ -4,22 +4,22 @@
  * and open the template in the editor.
  */
 package GUI;
-
 import BL.TravelGuideBL;
-import DAL.Day;
-import java.util.ArrayList;
-
-
-
+import GUI.MainGUI;
 /**
  *
  * @author Patrick
  */
 public class CompareToolDialog extends javax.swing.JDialog {
+    public String travelday;
+    private MainGUI gui;
+    public int sortSelect;
+    public TravelGuideBL tgbl = TravelGuideBL.getTravelGuideData();
 
-    public CompareToolDialog(java.awt.Frame parent, boolean modal) {
+    public CompareToolDialog(java.awt.Frame parent, boolean modal, MainGUI gui) {
         super(parent, modal);
         initComponents();
+        this.gui = gui;
         cbInit();
         
     }
@@ -27,16 +27,19 @@ public class CompareToolDialog extends javax.swing.JDialog {
 /**
      * Creates new form CompareToolDialog
      */
+        /**Adds the dates to the combobox
+         * 
+         */
         public void cbInit()
     {            
+            TravelGuideBL bl = tgbl.getWeatherData(0);
             cbDay.addItem("TODAY");
             cbDay.addItem("TOMORROW");
-            cbDay.addItem("DAY3");
-            cbDay.addItem("DAY4");
-            cbDay.addItem("DAY5");
+            cbDay.addItem(bl.getList().get(bl.getNextDay()+8).getDt_txt().replace('-', '.').substring(0, 10));
+            cbDay.addItem(bl.getList().get(bl.getNextDay()+16).getDt_txt().replace('-', '.').substring(0, 10));
+            cbDay.addItem(bl.getList().get(bl.getNextDay()+24).getDt_txt().replace('-', '.').substring(0, 10));
             cbDay.setSelectedIndex(0);
-            cbDay.updateUI();
-        
+            cbDay.updateUI();        
     }
 
     /**
@@ -48,15 +51,16 @@ public class CompareToolDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        btSelectionGroup = new javax.swing.ButtonGroup();
         cbDay = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        bnOk = new javax.swing.JButton();
+        bnCancel = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         rbTemp = new javax.swing.JRadioButton();
         rbHumid = new javax.swing.JRadioButton();
         rbPress = new javax.swing.JRadioButton();
+        jRadioButton1 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CompareToolDialog");
@@ -64,87 +68,107 @@ public class CompareToolDialog extends javax.swing.JDialog {
 
         getContentPane().add(cbDay, java.awt.BorderLayout.PAGE_START);
 
-        jPanel2.setLayout(new java.awt.GridLayout());
+        jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
-        jButton2.setText("OK");
-        jPanel2.add(jButton2);
+        bnOk.setText("OK");
+        bnOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bnOkActionPerformed(evt);
+            }
+        });
+        jPanel2.add(bnOk);
 
-        jButton3.setText("Cancel");
-        jButton3.setToolTipText("");
-        jPanel2.add(jButton3);
+        bnCancel.setText("Cancel");
+        bnCancel.setToolTipText("");
+        bnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bnCancelActionPerformed(evt);
+            }
+        });
+        jPanel2.add(bnCancel);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
-        jPanel3.setLayout(new java.awt.GridLayout(3, 0));
+        jPanel3.setLayout(new java.awt.GridLayout(4, 0));
 
-        buttonGroup1.add(rbTemp);
+        btSelectionGroup.add(rbTemp);
         rbTemp.setText("Sort by Temperature");
         jPanel3.add(rbTemp);
 
-        buttonGroup1.add(rbHumid);
+        btSelectionGroup.add(rbHumid);
         rbHumid.setText("Sort by Humidity");
         jPanel3.add(rbHumid);
 
-        buttonGroup1.add(rbPress);
+        btSelectionGroup.add(rbPress);
         rbPress.setText("Sort by Air Pressure");
         jPanel3.add(rbPress);
+
+        btSelectionGroup.add(jRadioButton1);
+        jRadioButton1.setText("No sort");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jRadioButton1);
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CompareToolDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CompareToolDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CompareToolDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CompareToolDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                CompareToolDialog dialog = new CompareToolDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
+    private void bnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnOkActionPerformed
+        String dayOfTravel = String.valueOf(cbDay.getSelectedItem());
+        this.setVisible(false);
+        travelday = dayOfTravel;
+        if(rbTemp.isSelected())
+        {
+            sortSelect = 1;
+        }
+        else if(rbHumid.isSelected())
+        {
+            sortSelect = 2;
+        }
+        else if(rbPress.isSelected())
+        {
+            sortSelect = 3;
+        }
+        else
+        {
+            sortSelect = 1;
+        }
+        System.out.println(sortSelect);
+        CompToolGUI wp = new CompToolGUI(gui, true, this);
+        wp.setVisible(true);       
+    }//GEN-LAST:event_bnOkActionPerformed
+
+    private void bnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnCancelActionPerformed
+        dispose();
+    }//GEN-LAST:event_bnCancelActionPerformed
+
+    public String getTravelday() {
+        return travelday;
+    }
+    public int returnSort() {
+        return sortSelect;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton bnCancel;
+    private javax.swing.JButton bnOk;
+    private javax.swing.ButtonGroup btSelectionGroup;
     private javax.swing.JComboBox<String> cbDay;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton rbHumid;
     private javax.swing.JRadioButton rbPress;
     private javax.swing.JRadioButton rbTemp;
     // End of variables declaration//GEN-END:variables
+
+    
 }

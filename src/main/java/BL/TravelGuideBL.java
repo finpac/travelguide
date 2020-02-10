@@ -5,7 +5,6 @@
  */
 package BL;
 
-import DAL.Day;
 import DAL.LocationData;
 import com.google.gson.Gson;
 import java.io.File;
@@ -42,14 +41,36 @@ public class TravelGuideBL {
     private final static File FILE = new File("Location.xml");
     private Document docu;
     public TravelGuideBL respo;   
-    private List <OpenWeatherResponse> list;   
+    public List <OpenWeatherResponse> list;   
     private boolean zipnotfound =false;
-   
+    private static TravelGuideBL tgb;
     
+    /**Singleton Implementation because of some errors in CompareTool GUI and Dia
+     * 
+     * @return 
+     */
+    public static TravelGuideBL getTravelGuideData()
+    {
+        if(tgb == null)
+        {
+            tgb = new TravelGuideBL();
+        }
+        return tgb;
+    }
+    
+    /**Returns OpenWeatherResponse List
+     * 
+     * @return 
+     */
     public List<OpenWeatherResponse> getList() {
         return list;
     }
 
+    /**This Method gets the Weather Data from Openweathermap and checks if there is a zip with country code or a city which can be found
+     * 
+     * @param i
+     * @return 
+     */
     public TravelGuideBL getWeatherData(int i)
     {
         Client c = ClientBuilder.newClient();
@@ -93,18 +114,35 @@ public class TravelGuideBL {
         return respo;  
     }
 
+    /**Adds a location to Location ArrayList
+     * 
+     * @param ld 
+     */
     public void addLocation(LocationData ld) {
         locdata.add(ld);
     }
     
+    /**Removes a location
+     * 
+     * @param selectedIndex 
+     */
     public void remove(int selectedIndex) {
         locdata.remove(selectedIndex);
     }
 
+    /**returns the list for other classes
+     * 
+     * @return 
+     */
     public ArrayList<LocationData> getLocdata() {
         return locdata;
     }
     
+    /**Creates the document for saving in XML
+     * 
+     * @param rootElement
+     * @return 
+     */
     public Document createDocument(String rootElement) {
         Document d = new Document() {};
         Element root = new Element(rootElement);
@@ -112,7 +150,10 @@ public class TravelGuideBL {
         return d;
     }
 
-    
+    /**Prepares the xml Document, set the structure of it and the data from Locationlist
+     * 
+     * @param doc 
+     */
     public void prepareXML(Document doc)
     {
         Element e1 = new Element("Location");
@@ -133,11 +174,11 @@ public class TravelGuideBL {
             e4 = new Element("Country");
         } 
     }
-    /*
-        This Methode deletes the old xml if exists and writes the updated xml with 
-        the common hierarchy
+    /**
+        This Methode removes the previous xml if it exists and save the updated xml with 
+        the in preparexml created hierarchy
         https://developers.google.com/apps-script/reference/xml-service/format
-    */
+        */
     public void writeXML(Document doc) throws FileNotFoundException, IOException 
     {                    
         Format format = Format.getCompactFormat();
@@ -155,9 +196,12 @@ public class TravelGuideBL {
         XMLOutputter xmlOut = new XMLOutputter(format);
         xmlOut.output(doc, fos);        
     }
-    /**
-        This Methode loads the saved XML file into a document
-         */
+    
+
+ /**
+  * This method loads the saved XML file into a document
+  */
+     
     public void loadData()   {       
         SAXBuilder sbuilder = new SAXBuilder();
         try {
@@ -170,8 +214,8 @@ public class TravelGuideBL {
         getData();
     }
     /**
-        This Methode gets the Data from the saved XML
-         */
+        This Method gets the Data from the saved XML and put it into the list
+    */
     public void getData() {       
         Element root = docu.getRootElement();
         List<Element> data = root.getChildren("Location");
@@ -198,21 +242,30 @@ public class TravelGuideBL {
         }
     }
    
+    /**This method returns the next day because the forecast return weather data every 3hours
+     * 
+     * @return 
+     */
     public int getNextDay()
-    {
+    {      
         int forecastNum = 0;
         for(int i = 0; i < 9; i++)
-            {
+            {             
                 if(!getList().get(0).getDt_txt().substring(0, 10).equals(getList().get(i).getDt_txt().substring(0, 10)))
                 {
-                    forecastNum = i;
-//                    System.out.println(forecastNum);
+                    forecastNum = i;                   
+                    System.out.println(forecastNum);
                     break;
                 }
             }
         return forecastNum;
     }
     
+    /**This methode calculate the average max temp of a day
+     * 
+     * @param threehourzone
+     * @return 
+     */
     public float avgmaxTemp(int threehourzone)
     {
         float tempDayMax = (float) ((getList().get(threehourzone).getMain().getTemp_max() 
@@ -222,6 +275,11 @@ public class TravelGuideBL {
         return tempDayMax;
     }
     
+    /**This methode calculate the average min temp of a day
+     * 
+     * @param threehourzone
+     * @return 
+     */
     public float avgminTemp(int threehourzone)
     {
         float tempDayMin = (float) ((getList().get(threehourzone+3).getMain().getTemp_min()
@@ -231,6 +289,11 @@ public class TravelGuideBL {
         return tempDayMin;
     }
     
+    /**This methode calculate the average temp of a hole day
+     * 
+     * @param threehourzone
+     * @return 
+     */
     public float avgTemp(int threehourzone)
     {
         float tempDay = (float) ((getList().get(threehourzone).getMain().getTemp()
@@ -239,6 +302,11 @@ public class TravelGuideBL {
         return tempDay;
     }
     
+    /**This methode calculate the average humidity of a hole day
+     * 
+     * @param threehourzone
+     * @return 
+     */
     public float avgHumidity(int threehourzone)
     {
         float humidDay = (float) ((getList().get(threehourzone).getMain().getHumidity()
@@ -247,6 +315,11 @@ public class TravelGuideBL {
         return humidDay;
     }
     
+    /**This methode calculate the average preasure of a hole day
+     * 
+     * @param threehourzone
+     * @return 
+     */
     public float avgPressure(int threehourzone)
     {
         float pressDay = (float) ((getList().get(threehourzone).getMain().getPressure()

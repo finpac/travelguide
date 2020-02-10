@@ -25,7 +25,7 @@ import org.jdom2.Document;
  */
 public class MainGUI extends javax.swing.JFrame {
 
-    TravelGuideBL tgbl = new TravelGuideBL();
+    TravelGuideBL tgbl = TravelGuideBL.getTravelGuideData();
     private Document doc;
     
     /** Creates new form NewJFrame */
@@ -37,6 +37,7 @@ public class MainGUI extends javax.swing.JFrame {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         cbInit();
+        //Saves the location data when closing the program
         this.addWindowListener(new WindowAdapter() {
             
             public void windowClosing(WindowEvent evt) {
@@ -52,6 +53,9 @@ public class MainGUI extends javax.swing.JFrame {
         });
     }
     
+    /**Initialize the combobox
+     * 
+     */
     public void cbInit() {
         if(tgbl.getLocdata().size() > 0)
         {
@@ -104,7 +108,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridLayout(2, 0));
 
-        pnFirstTwoDays.setBackground(new java.awt.Color(0, 102, 153));
+        pnFirstTwoDays.setBackground(new java.awt.Color(0, 153, 204));
         pnFirstTwoDays.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         pnFirstTwoDays.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -117,7 +121,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jPanel1.add(pnFirstTwoDays);
 
-        pnOtherDays.setBackground(new java.awt.Color(0, 153, 204));
+        pnOtherDays.setBackground(new java.awt.Color(0, 194, 212));
         pnOtherDays.setForeground(new java.awt.Color(255, 255, 255));
         pnOtherDays.setLayout(new java.awt.GridLayout(1, 3));
 
@@ -199,7 +203,10 @@ public class MainGUI extends javax.swing.JFrame {
             cbLocation.updateUI();
         }
     }//GEN-LAST:event_miAddActionPerformed
-
+/**Set the text to the gui
+ * 
+ * @param evt 
+ */
     private void cbLocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLocationActionPerformed
         TravelGuideBL bl =tgbl.getWeatherData(cbLocation.getSelectedIndex());
         //System.out.println(String.valueOf(bl.getList().get(0).getWeather().get(0).getDescription()));
@@ -215,7 +222,7 @@ public class MainGUI extends javax.swing.JFrame {
                     +"hPa</body></html>");
             jLabel1.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(0).getWeather().get(0).getIcon()+".png"))));
             jLabel2.setText("<html><body><h2>TOMORROW</h2><p style='font-size:130%;'>"
-                    +String.valueOf(bl.avgTemp(bl.getNextDay())).substring(0, 3)+" °C</p>"
+                    +String.valueOf(bl.avgTemp(bl.getNextDay())).substring(0, 4)+" °C</p>"
                     +bl.getList().get(8).getWeather().get(0).getDescription()+" <br>Min/Max: "
                     +String.valueOf(bl.avgminTemp(bl.getNextDay())).substring(0, 4)+"° / "
                     + String.valueOf(bl.avgmaxTemp(bl.getNextDay())).substring(0, 4)
@@ -252,9 +259,8 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_cbLocationActionPerformed
 
     private void miCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCompActionPerformed
-        CompareToolDialog ctd = new CompareToolDialog(this, true);
-        ctd.setVisible(true);
-        
+        CompareToolDialog ctd = new CompareToolDialog(this, true, this);
+        ctd.setVisible(true); 
     }//GEN-LAST:event_miCompActionPerformed
 
     /**
