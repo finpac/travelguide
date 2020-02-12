@@ -21,24 +21,24 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class TravelGuideUnitTest {
     
-    public TravelGuideUnitTest() {
-    }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
-    }
+//    public TravelGuideUnitTest() {
+//    }
+//    
+//    @BeforeAll
+//    public static void setUpClass() {
+//    }
+//    
+//    @AfterAll
+//    public static void tearDownClass() {
+//    }
+//    
+//    @BeforeEach
+//    public void setUp() {
+//    }
+//    
+//    @AfterEach
+//    public void tearDown() {
+//    }
 
     private Comparator<WeatherComperation> compareByHumidity = new Comparator<WeatherComperation>() {
         @Override
@@ -56,21 +56,21 @@ public class TravelGuideUnitTest {
     @Test
     public void testSortList() {
         WeatherTableModel instance = new WeatherTableModel();
-        instance.addWeatherData(new WeatherComperation("Kirchbach", 4, 2, 1));
-        instance.addWeatherData(new WeatherComperation("Leibnitz", 5, 1, 2));
-        instance.addWeatherData(new WeatherComperation("Berlin", 0, 6, 10));
-        instance.addWeatherData(new WeatherComperation("Braunau", 1, 3, 8));
+        instance.addWeatherData(new WeatherComperation("St. Stefan im Rosental", 4, 2, 1));
+        instance.addWeatherData(new WeatherComperation("Pirching", 5, 1, 2));
+        instance.addWeatherData(new WeatherComperation("Hurghada", 0, 6, 10));
+        instance.addWeatherData(new WeatherComperation("Gnas", 1, 3, 8));
         ArrayList<WeatherComperation> wp = new ArrayList();
-        wp.add(new WeatherComperation("Kirchbach", 4, 2, 1));
-        wp.add(new WeatherComperation("Leibnitz", 5, 1, 2));
-        wp.add(new WeatherComperation("Berlin", 0, 6, 10));
-        wp.add(new WeatherComperation("Braunau", 1, 3, 8));
+        wp.add(new WeatherComperation("St. Stefan im Rosental", 4, 2, 1));
+        wp.add(new WeatherComperation("Pirching", 5, 1, 2));
+        wp.add(new WeatherComperation("Hurghada", 0, 6, 10));
+        wp.add(new WeatherComperation("Gnas", 1, 3, 8));
         instance.sortList(2);
         wp.sort(compareByHumidity);
-        assertEquals(wp.get(0).getHumidity(),instance.getValueAt(0, 3));
+        assertEquals(wp.get(0).getHumidity()+ " %",instance.getValueAt(0, 2));
         instance.sortList(3);
         wp.sort(compareByPreasure);
-        assertEquals(wp.get(0).getAirPressure(),instance.getValueAt(0, 4));
+        assertEquals(wp.get(0).getAirPressure()+ " hPa",instance.getValueAt(0, 3));
         
     }
 }

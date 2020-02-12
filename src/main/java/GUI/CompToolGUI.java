@@ -79,8 +79,7 @@ public class CompToolGUI extends javax.swing.JDialog {
         }
         tb.clearPurposeList();
         for (int i = 0; i < tgbl.getLocdata().size(); i++) {
-            TravelGuideBL trav;
-                trav = tgbl.getWeatherData(i);
+            TravelGuideBL trav = tgbl.getWeatherData(i);
                 tb.addWeatherData(new WeatherComperation(tgbl.getLocdata().get(i).getCity(), 
                         (float) (trav.avgTemp(travelday)),
                         trav.getList().get(travelday).getMain().getHumidity(),

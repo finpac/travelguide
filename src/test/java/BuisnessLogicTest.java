@@ -19,35 +19,33 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BuisnessLogicTest {
     
-    public BuisnessLogicTest() {
-    }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
-    }
+//    public BuisnessLogicTest() {
+//    }
+//    
+//    @BeforeAll
+//    public static void setUpClass() {
+//    }
+//    
+//    @AfterAll
+//    public static void tearDownClass() {
+//    }
+//    
+//    @BeforeEach
+//    public void setUp() {
+//    }
+//    
+//    @AfterEach
+//    public void tearDown() {
+//    }
 
     @Test
-    public void testGetJSONData() throws Exception {
-        System.out.println("getJSONData");
+    public void testGetWeatherData() throws Exception {
         int selectedTown = 0;
-        TravelGuideBL instance = new TravelGuideBL();
+        TravelGuideBL instance = TravelGuideBL.getTravelGuideData();
         String city = "Tiefernitz";
-        LocationData t = new LocationData("Tiefernitz","8082", "at");
+        LocationData t = new LocationData(city,"8324", "AT");
         instance.addLocation(t);
-        TravelGuideBL result = instance.getWeatherData(selectedTown);
-        assertEquals(city, result.getLocdata().get(selectedTown).getCity());
+        assertEquals(city, instance.getLocdata().get(selectedTown).getCity());
         
     }
 }

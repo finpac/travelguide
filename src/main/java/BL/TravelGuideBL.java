@@ -86,7 +86,7 @@ public class TravelGuideBL {
                   .get();
 
           String jsonStrg = resp.readEntity(String.class);
-         // System.out.println(jsonStrg);
+          System.out.println(jsonStrg);
           respo = new Gson().fromJson(jsonStrg, TravelGuideBL.class);
           if(resp.getStatus() == 404)
           {

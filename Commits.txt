@@ -1,0 +1,15 @@
+9490f4b0aea2d280c7c3dcbe1343898c5a171e99 e2ed6ca3e5cb2c7931516b9fea40c3e2e743c44f finpac <finpac14@htlkaindorf.at> 1579684751 +0100	commit: New Soft
+e2ed6ca3e5cb2c7931516b9fea40c3e2e743c44f b1290c6687fe00524b4c21e5cff9806b70a664b1 finpac <finpac14@htlkaindorf.at> 1579684981 +0100	commit: New Soft
+b1290c6687fe00524b4c21e5cff9806b70a664b1 9620bd2639be4080ca2f3c1a55aa6dc930871502 finpac <finpac14@htlkaindorf.at> 1579689012 +0100	commit: Added Dialog
+9620bd2639be4080ca2f3c1a55aa6dc930871502 cec6c85d14a44c2b31b59b5355711f1834c31baa finpac <finpac14@htlkaindorf.at> 1580897465 +0100	commit: Add Dialog and Combobox
+cec6c85d14a44c2b31b59b5355711f1834c31baa 2786fa38259310dde51c5d961e824d4fe584117e finpac <finpac14@htlkaindorf.at> 1580898261 +0100	commit: Dialog Implementation and Comboxbox Implementation 
+2786fa38259310dde51c5d961e824d4fe584117e 4f0a9e9e9626c7821fc5394fe6d60e11c8a904d8 finpac <finpac14@htlkaindorf.at> 1580908584 +0100	commit: Implementation of Save and Load XML
+4f0a9e9e9626c7821fc5394fe6d60e11c8a904d8 ad6bc58e860c2f17fee4cf9f93a56617a70db35f finpac <finpac14@htlkaindorf.at> 1580908701 +0100	merge origin/master: Merge made by recursive.
+ad6bc58e860c2f17fee4cf9f93a56617a70db35f 5b92e5aa9f4a5186a43d5eb2d2c234aa14dbaea7 finpac <finpac14@htlkaindorf.at> 1580935878 +0100	commit: IMplementation of WeatherResponse
+5b92e5aa9f4a5186a43d5eb2d2c234aa14dbaea7 ba23328c100282a2276799c9b94b9e61c9dbef35 finpac <finpac14@htlkaindorf.at> 1580982607 +0100	commit: Display the weather in GUI
+ba23328c100282a2276799c9b94b9e61c9dbef35 fb3797ae68b7f7fff8682693198f6eae728ddfe0 finpac <finpac14@htlkaindorf.at> 1580990791 +0100	commit: Added ImageIcons to jLabel
+fb3797ae68b7f7fff8682693198f6eae728ddfe0 dd5be2adbba30e18636dae3db1cb455c288929ae finpac <finpac14@htlkaindorf.at> 1581001270 +0100	commit: Design of GUI
+dd5be2adbba30e18636dae3db1cb455c288929ae ea22378f5c8f4e1c1e8060f0a5843605b8912e93 finpac <finpac14@htlkaindorf.at> 1581193258 +0100	commit: partly implementation of ComparationTool
+ea22378f5c8f4e1c1e8060f0a5843605b8912e93 3340dafb5707c89d949c249e88b9e9c52bee030b finpac <finpac14@htlkaindorf.at> 1581193369 +0100	commit: partly implementation of ComparationTool
+3340dafb5707c89d949c249e88b9e9c52bee030b 5714b4179ffb126fc7d75f722ca36929a72e6757 finpac <finpac14@htlkaindorf.at> 1581328019 +0100	commit: full implementation of ComparationTool and added unittests
+5714b4179ffb126fc7d75f722ca36929a72e6757 358e07544117563d34ae055c01e29cda81aa5f18 finpac <finpac14@htlkaindorf.at> 1581328106 +0100	commit: created javadoc

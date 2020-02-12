@@ -7,6 +7,7 @@
 package GUI;
 
 import BL.TravelGuideBL;
+import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -27,10 +28,13 @@ public class MainGUI extends javax.swing.JFrame {
 
     TravelGuideBL tgbl = TravelGuideBL.getTravelGuideData();
     private Document doc;
+    private int selectDay;
+    
     
     /** Creates new form NewJFrame */
     public MainGUI() {
         initComponents();
+        this.setIconImage(new ImageIcon("src/main/java/weather.png").getImage());
         try {
             tgbl.loadData();
         } catch (Exception ex) {
@@ -76,21 +80,25 @@ public class MainGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
         cbLocation = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         pnFirstTwoDays = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lbDay1 = new javax.swing.JLabel();
+        lbDay2 = new javax.swing.JLabel();
         pnOtherDays = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lbDay3 = new javax.swing.JLabel();
+        lbDay4 = new javax.swing.JLabel();
+        lbDay5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         miAdd = new javax.swing.JMenuItem();
         miRemove = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         miComp = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+
+        jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("WeatherTraveller");
@@ -112,12 +120,22 @@ public class MainGUI extends javax.swing.JFrame {
         pnFirstTwoDays.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         pnFirstTwoDays.setLayout(new java.awt.GridLayout(1, 2));
 
-        jLabel1.setForeground(new java.awt.Color(255, 204, 0));
-        pnFirstTwoDays.add(jLabel1);
+        lbDay1.setForeground(new java.awt.Color(255, 204, 0));
+        lbDay1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbDay1MouseClicked(evt);
+            }
+        });
+        pnFirstTwoDays.add(lbDay1);
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("jLabel2");
-        pnFirstTwoDays.add(jLabel2);
+        lbDay2.setForeground(new java.awt.Color(255, 255, 255));
+        lbDay2.setText("jLabel2");
+        lbDay2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbDay2MouseClicked(evt);
+            }
+        });
+        pnFirstTwoDays.add(lbDay2);
 
         jPanel1.add(pnFirstTwoDays);
 
@@ -125,17 +143,32 @@ public class MainGUI extends javax.swing.JFrame {
         pnOtherDays.setForeground(new java.awt.Color(255, 255, 255));
         pnOtherDays.setLayout(new java.awt.GridLayout(1, 3));
 
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("jLabel3");
-        pnOtherDays.add(jLabel3);
+        lbDay3.setForeground(new java.awt.Color(255, 255, 255));
+        lbDay3.setText("jLabel3");
+        lbDay3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbDay3MouseClicked(evt);
+            }
+        });
+        pnOtherDays.add(lbDay3);
 
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("jLabel4");
-        pnOtherDays.add(jLabel4);
+        lbDay4.setForeground(new java.awt.Color(255, 255, 255));
+        lbDay4.setText("jLabel4");
+        lbDay4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbDay4MouseClicked(evt);
+            }
+        });
+        pnOtherDays.add(lbDay4);
 
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("jLabel5");
-        pnOtherDays.add(jLabel5);
+        lbDay5.setForeground(new java.awt.Color(255, 255, 255));
+        lbDay5.setText("jLabel5");
+        lbDay5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbDay5MouseClicked(evt);
+            }
+        });
+        pnOtherDays.add(lbDay5);
 
         jPanel1.add(pnOtherDays);
 
@@ -176,6 +209,9 @@ public class MainGUI extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setText("Info");
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         pack();
@@ -212,45 +248,45 @@ public class MainGUI extends javax.swing.JFrame {
         //System.out.println(String.valueOf(bl.getList().get(0).getWeather().get(0).getDescription()));
         try {
             //jLabel1.setText(String.valueOf("Today:"+bl.getList().get(0).getWeather().get(0).getDescription()+ " "+ (bl.getList().get(0).getMain().getTemp() - 273.15)+" "));
-            jLabel1.setText("<html><body><h2>TODAY</h2><p style='font-size:130%;'>"
-                    +String.valueOf(bl.avgTemp(0)).substring(0, 4)+" °C </p>"
+            lbDay1.setText("<html><body><h2>TODAY</h2><p style='font-size:130%;'>"
+                    +String.valueOf(bl.getList().get(0).getMain().getTemp()-273.15).substring(0, 3)+" °C </p>"
                     +bl.getList().get(0).getWeather().get(0).getDescription()+"<br>Min/Max: "
-                    +String.valueOf(bl.avgminTemp(0)).substring(0, 4)+"° / "
-                    + String.valueOf(bl.avgmaxTemp(0)).substring(0, 4)
+                    +String.valueOf(bl.avgminTemp(0)).substring(0, 3)+"° / "
+                    + String.valueOf(bl.avgmaxTemp(0)).substring(0, 3)
                     +"°<br>Humidity: "+bl.getList().get(0).getMain().getHumidity() +
                     "%<br>Pressure: "+bl.getList().get(0).getMain().getPressure()
                     +"hPa</body></html>");
-            jLabel1.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(0).getWeather().get(0).getIcon()+".png"))));
-            jLabel2.setText("<html><body><h2>TOMORROW</h2><p style='font-size:130%;'>"
-                    +String.valueOf(bl.avgTemp(bl.getNextDay())).substring(0, 4)+" °C</p>"
+            lbDay1.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(0).getWeather().get(0).getIcon()+".png"))));
+            lbDay2.setText("<html><body><h2>TOMORROW</h2><p style='font-size:130%;'>"
+                    +String.valueOf(bl.avgTemp(bl.getNextDay())).substring(0, 3)+" °C</p>"
                     +bl.getList().get(8).getWeather().get(0).getDescription()+" <br>Min/Max: "
-                    +String.valueOf(bl.avgminTemp(bl.getNextDay())).substring(0, 4)+"° / "
-                    + String.valueOf(bl.avgmaxTemp(bl.getNextDay())).substring(0, 4)
+                    +String.valueOf(bl.avgminTemp(bl.getNextDay())).substring(0, 3)+"° / "
+                    + String.valueOf(bl.avgmaxTemp(bl.getNextDay())).substring(0, 3)
                     +"°<br>Humidity: "+bl.getList().get(8).getMain().getHumidity() +
                     "%<br>Pressure: "+bl.getList().get(8).getMain().getPressure()
                     +"hPa</body></html>");
-            jLabel2.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(8).getWeather().get(0).getIcon()+".png"))));
-            jLabel3.setText("<html><body><h3>"
+            lbDay2.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(8).getWeather().get(0).getIcon()+".png"))));
+            lbDay3.setText("<html><body><h3>"
                     +bl.getList().get(16).getDt_txt().replace('-', '.').substring(0, 10)+"</h3>"
-                    +String.valueOf(bl.avgminTemp(bl.getNextDay()+8)).substring(0, 4)+"° / "
-                    + String.valueOf(bl.avgmaxTemp(bl.getNextDay()+8)).substring(0, 4)
+                    +String.valueOf(bl.avgminTemp(bl.getNextDay()+8)).substring(0, 3)+"° / "
+                    + String.valueOf(bl.avgmaxTemp(bl.getNextDay()+8)).substring(0, 3)
                     +" °C<br>"+bl.getList().get(16).getWeather().get(0).getDescription()
                     +"</body></html>");
-            jLabel3.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(16).getWeather().get(0).getIcon()+".png"))));
-            jLabel4.setText("<html><body><h3>"
+            lbDay3.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(16).getWeather().get(0).getIcon()+".png"))));
+            lbDay4.setText("<html><body><h3>"
                     +bl.getList().get(24).getDt_txt().replace('-', '.').substring(0, 10)+"</h3>"
-                    +String.valueOf(bl.avgminTemp(bl.getNextDay()+16)).substring(0, 4)
-                    +"° / "+ String.valueOf(bl.avgmaxTemp(bl.getNextDay()+16)).substring(0, 4)
+                    +String.valueOf(bl.avgminTemp(bl.getNextDay()+16)).substring(0, 3)
+                    +"° / "+ String.valueOf(bl.avgmaxTemp(bl.getNextDay()+16)).substring(0, 3)
                     +" °C<br>"+bl.getList().get(24).getWeather().get(0).getDescription()
                     +"</body></html>");
-            jLabel4.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(24).getWeather().get(0).getIcon()+".png"))));
-            jLabel5.setText("<html><body><h3>"
+            lbDay4.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(24).getWeather().get(0).getIcon()+".png"))));
+            lbDay5.setText("<html><body><h3>"
                     +bl.getList().get(32).getDt_txt().replace('-', '.').substring(0, 10)
-                    +"</h3>"+String.valueOf(bl.avgminTemp(bl.getNextDay()+24)).substring(0, 4)
-                    +"° / "+ String.valueOf(bl.avgmaxTemp(bl.getNextDay()+24)).substring(0, 4)
+                    +"</h3>"+String.valueOf(bl.avgminTemp(bl.getNextDay()+24)).substring(0, 3)
+                    +"° / "+ String.valueOf(bl.avgmaxTemp(bl.getNextDay()+24)).substring(0, 3)
                     +" °C<br>"+bl.getList().get(32).getWeather().get(0).getDescription()
                     +"</body></html>");
-            jLabel5.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(32).getWeather().get(0).getIcon()+".png"))));       
+            lbDay5.setIcon(new ImageIcon(ImageIO.read(new URL("http://openweathermap.org/img/wn/"+bl.getList().get(32).getWeather().get(0).getIcon()+".png"))));       
         } catch (MalformedURLException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -263,6 +299,37 @@ public class MainGUI extends javax.swing.JFrame {
         ctd.setVisible(true); 
     }//GEN-LAST:event_miCompActionPerformed
 
+    private void lbDay1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbDay1MouseClicked
+         selectDay = 1;
+         //openselectedDayDetail();
+    }//GEN-LAST:event_lbDay1MouseClicked
+
+    private void lbDay2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbDay2MouseClicked
+        selectDay = 2;
+        //openselectedDayDetail();
+    }//GEN-LAST:event_lbDay2MouseClicked
+
+    private void lbDay3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbDay3MouseClicked
+        selectDay = 3;
+        //openselectedDayDetail();
+    }//GEN-LAST:event_lbDay3MouseClicked
+
+    private void lbDay4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbDay4MouseClicked
+        selectDay = 4;
+        openselectedDayDetail();
+    }//GEN-LAST:event_lbDay4MouseClicked
+
+    private void lbDay5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbDay5MouseClicked
+        selectDay = 5;
+        //openselectedDayDetail();
+    }//GEN-LAST:event_lbDay5MouseClicked
+
+    public void openselectedDayDetail()
+    {
+        WeatherDetail wd = new WeatherDetail(this, true);
+        wd.setVisible(true);
+//        wd.lbInit(cbLocation.getSelectedIndex(), selectDay);
+    }
     /**
      * @param args the command line arguments
      */
@@ -303,15 +370,17 @@ public class MainGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbLocation;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbDay1;
+    private javax.swing.JLabel lbDay2;
+    private javax.swing.JLabel lbDay3;
+    private javax.swing.JLabel lbDay4;
+    private javax.swing.JLabel lbDay5;
     private javax.swing.JMenuItem miAdd;
     private javax.swing.JMenuItem miComp;
     private javax.swing.JMenuItem miRemove;
